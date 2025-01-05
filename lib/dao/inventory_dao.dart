@@ -6,15 +6,27 @@ class InventoryDao {
 
   InventoryDao(this.database);
 
+  static const String tableName = 'Inventory';
+  static const String createTableQuery = '''
+    CREATE TABLE $tableName (
+      item_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      quantity INTEGER NOT NULL,
+      item_name TEXT NOT NULL,
+      unit TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (item_id) REFERENCES Items (item_id)
+    )
+  ''';
+
   Future<void> insertDefaultInventoryItems(Transaction txn) async {
     await txn.insert('Inventory',
         Inventory(quantity: 100, itemName: 'Sugar', unit: 'Bag').toMap());
 
     await txn.insert('Inventory',
-        Inventory(quantity: 100, itemName: 'Oil', unit: 'Tin').toMap());
+        Inventory(quantity: 50, itemName: 'Oil', unit: 'Tin').toMap());
 
     await txn.insert('Inventory',
-        Inventory(quantity: 100, itemName: 'Besan', unit: 'Bag').toMap());
+        Inventory(quantity: 40, itemName: 'Besan', unit: 'Bag').toMap());
   }
 
   Future<List<Inventory>> getAllInventory() async {
@@ -39,6 +51,18 @@ class InventoryDao {
     return null;
   }
 
+  Future<int> addInventoryByItemId(
+      Transaction txn, int itemId, int quantity) async {
+    return await txn.rawUpdate(
+      '''
+    UPDATE Inventory
+    SET quantity = quantity + ?
+    WHERE item_id = ?
+    ''',
+      [quantity, itemId],
+    );
+  }
+
   Future<int> updateInventory(Transaction txn,Inventory inventory) async {
     return await txn.update(
       'Inventory',
@@ -48,11 +72,4 @@ class InventoryDao {
     );
   }
 
-  Future<int> deleteInventory(int inventoryId) async {
-    return await database.delete(
-      'Inventory',
-      where: 'inventory_id = ?',
-      whereArgs: [inventoryId],
-    );
-  }
 }

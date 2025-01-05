@@ -1,13 +1,11 @@
+import 'package:elastic_run/dao/customer_dao.dart';
 import 'package:elastic_run/dao/inventory_dao.dart';
-import 'package:elastic_run/models/customer_model.dart';
-import 'package:elastic_run/models/inventry_model.dart';
-import 'package:elastic_run/models/invoice_item_model.dart';
-import 'package:elastic_run/models/invoice_model.dart';
-import 'package:elastic_run/models/item_model.dart';
-import 'package:elastic_run/models/rejected_item_model.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:elastic_run/dao/invoice_dao.dart';
+import 'package:elastic_run/dao/invoice_item_dao.dart';
+import 'package:elastic_run/dao/sales_return_dao.dart';
+import 'package:elastic_run/dao/sales_return_item_dao.dart';
 import 'package:path/path.dart';
-
+import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -30,12 +28,12 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute(Item.createTableQuery);
-    await db.execute(Inventory.createTableQuery);
-    await db.execute(Customer.createTableQuery);
-    await db.execute(Invoice.createTableQuery);
-    await db.execute(InvoiceItem.createTableQuery);
-    await db.execute(RejectedItem.createTableQuery);
+    await db.execute(InventoryDao.createTableQuery);
+    await db.execute(CustomerDao.createTableQuery);
+    await db.execute(InvoiceDao.createTableQuery);
+    await db.execute(InvoiceItemDao.createTableQuery);
+    await db.execute(SalesReturnDao.createTableQuery);
+    await db.execute(SalesReturnItemDao.createTableQuery);
 
     await db.transaction((txn) async {
       final inventoryDao = InventoryDao(db);

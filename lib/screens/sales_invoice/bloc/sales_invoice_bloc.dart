@@ -4,6 +4,7 @@ import 'package:elastic_run/dao/invoice_dao.dart';
 import 'package:elastic_run/dao/invoice_item_dao.dart';
 import 'package:elastic_run/db/db_helper.dart';
 import 'package:elastic_run/extensions/navigation.dart';
+import 'package:elastic_run/extensions/snackbar.dart';
 import 'package:elastic_run/main.dart';
 import 'package:elastic_run/models/customer_model.dart';
 import 'package:elastic_run/models/inventry_model.dart';
@@ -18,7 +19,7 @@ import 'package:sqflite/sqflite.dart';
 class SalesInvoiceBloc extends Bloc<SalesInvoiceEvent, SalesInvoiceState> {
   final CustomerDao _customerDao = CustomerDao(database!);
   final InventoryDao _inventoryDao = InventoryDao(database!);
-  final InvoiceDao _invoiceDao = InvoiceDao(database!);
+  final InvoiceDao _invoiceDao = InvoiceDao();
   final InvoiceItemDao _invoiceItemDao = InvoiceItemDao(database!);
   final List<Customer> _selectedCustomer = [];
 
@@ -38,7 +39,7 @@ class SalesInvoiceBloc extends Bloc<SalesInvoiceEvent, SalesInvoiceState> {
       CreateInvoiceEvent event, Emitter<SalesInvoiceState> emit) async {
     Database db = await DatabaseHelper().database;
     if (_selectedCustomer.isEmpty) {
-      _handleTransactionError(event.context, 'select customer name');
+      event.context.showSnackBar('select customer name');
       return;
     }
     try {
@@ -50,7 +51,7 @@ class SalesInvoiceBloc extends Bloc<SalesInvoiceEvent, SalesInvoiceState> {
       });
       event.context.pop();
     } catch (e) {
-      _handleTransactionError(event.context, e);
+      event.context.showSnackBar(e.toString());
     }
   }
 
@@ -104,12 +105,6 @@ class SalesInvoiceBloc extends Bloc<SalesInvoiceEvent, SalesInvoiceState> {
         await _inventoryDao.updateInventory(txn, inventory);
       }
     }
-  }
-
-  void _handleTransactionError(BuildContext context, Object error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Transaction failed: $error')),
-    );
   }
 
   Future<void> _onCustomerSelected(

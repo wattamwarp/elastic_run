@@ -1,10 +1,10 @@
 class Inventory {
-  static const String tableName = 'Inventory';
+
 
   final int? itemId;
-   int quantity;
   final String itemName;
   final String unit;
+  int quantity;
 
   Inventory(
       {this.itemId,
@@ -12,16 +12,6 @@ class Inventory {
       required this.itemName,
       required this.unit});
 
-  static const String createTableQuery = '''
-    CREATE TABLE $tableName (
-      item_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      quantity INTEGER NOT NULL,
-      item_name TEXT NOT NULL,
-      unit TEXT NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (item_id) REFERENCES Items (item_id)
-    )
-  ''';
 
   Map<String, dynamic> toMap() => {
         'item_id': itemId,

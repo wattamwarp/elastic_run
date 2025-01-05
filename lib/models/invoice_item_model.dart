@@ -1,5 +1,5 @@
 class InvoiceItem {
-  static const String tableName = 'Invoice_Items';
+
 
   final int? id;
   final int invoiceId;
@@ -8,17 +8,6 @@ class InvoiceItem {
 
   InvoiceItem({this.id, required this.invoiceId, required this.itemId, required this.quantity});
 
-  static const String createTableQuery = '''
-    CREATE TABLE $tableName (
-      invoice_item_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      invoice_id INTEGER NOT NULL,
-      item_id INTEGER NOT NULL,
-      deleted_at TEXT,
-      quantity INTEGER NOT NULL,
-      FOREIGN KEY (invoice_id) REFERENCES Invoices (invoice_id),
-      FOREIGN KEY (item_id) REFERENCES Items (item_id)
-    )
-  ''';
 
   Map<String, dynamic> toMap() => {
     'invoice_item_id': id,

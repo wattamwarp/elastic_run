@@ -1,10 +1,18 @@
-import 'package:elastic_run/db/db_helper.dart';
 import 'package:elastic_run/models/customer_model.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class CustomerDao {
   final Database database;
+
+  static const String tableName = 'Customers';
   CustomerDao(this.database);
+
+  static const String createTableQuery = '''
+    CREATE TABLE $tableName (
+      customer_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      customer_name TEXT NOT NULL
+    )
+  ''';
 
   Future<int> insertCustomer(Customer customer) async {
     return await database.insert('Customers', customer.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
@@ -27,11 +35,4 @@ class CustomerDao {
     return result.map((map) => Customer.fromMap(map)).toList();
   }
 
-  Future<int> deleteCustomer(int customerId) async {
-    return await database.delete(
-      'Customers',
-      where: 'customer_id = ?',
-      whereArgs: [customerId],
-    );
-  }
 }

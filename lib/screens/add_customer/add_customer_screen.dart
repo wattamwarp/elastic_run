@@ -1,8 +1,8 @@
 import 'package:elastic_run/color/er_color.dart';
 import 'package:elastic_run/extensions/containers.dart';
-import 'package:elastic_run/extensions/navigation.dart';
 import 'package:elastic_run/extensions/text.dart';
-import 'package:elastic_run/models/customer_model.dart';
+import 'package:elastic_run/reusable_widgets/custom_box.dart';
+import 'package:elastic_run/reusable_widgets/er_widgets.dart';
 import 'package:elastic_run/screens/add_customer/bloc/customer_bloc.dart';
 import 'package:elastic_run/screens/add_customer/bloc/customer_event.dart';
 import 'package:elastic_run/screens/add_customer/bloc/customer_state.dart';
@@ -14,73 +14,108 @@ class AddCustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(  create: (context) => CustomerBloc()..add(FetchCustomersEvent()),
-    child: _AddCustomerScreen(),);
+    return BlocProvider(
+      create: (context) => CustomerBloc()..add(FetchCustomersEvent()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: 'Add Customer'.boldText(fontSize: 18),
+        ),
+        body: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              _CustomerInputField(),
+              SizedBox(height: 16),
+              Expanded(child: _CustomerList()),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
+class _CustomerInputField extends StatefulWidget {
+  const _CustomerInputField();
 
-class _AddCustomerScreen extends StatelessWidget {
+  @override
+  State<_CustomerInputField> createState() => _CustomerInputFieldState();
+}
+
+class _CustomerInputFieldState extends State<_CustomerInputField> {
   final TextEditingController _controller = TextEditingController();
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _addCustomer(BuildContext context) {
+    final customerName = _controller.text.trim();
+    if (customerName.isNotEmpty) {
+      context.read<CustomerBloc>().add(AddCustomerEvent(name: customerName));
+      _controller.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: 'Add Customer'.boldText()),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Customer Name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-     16.height,
-            ElevatedButton(
-              onPressed: () {
-                final customerName = _controller.text;
-                if (customerName.isNotEmpty) {
-                  BlocProvider.of<CustomerBloc>(context)
-                      .add(AddCustomerEvent(name: customerName));
-                  _controller.clear();
-                }
-              },
-              child: 'Add Customer'.normalText(),
-            ),
-       16.height,
-            Expanded(
-              child: BlocBuilder<CustomerBloc, CustomerState>(
-                builder: (context, state) {
-                  if (state is CustomerLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is CustomerLoaded) {
-                    final List<Customer>  customers = state.customers;
-                    if(customers.isEmpty){
-                      return  Center(child: 'No customers yet.'.boldText(color: ErColor.red));
-                    }
-                    return ListView.builder(
-                      itemCount: customers.length,
-                      itemBuilder: (context, index) {
-                        final customer = customers[index];
-                        return ListTile(
-                          title:customer.customerName.normalText(),
-                        );
-                      },
-                    );
-                  } else if (state is CustomerError) {
-                    return Center(child: Text('Error: ${state.message}'));
-                  }
-                return 0.height;
-                },
-              ),
-            ),
-          ],
+    return Column(
+      children: [
+        TextField(
+          controller: _controller,
+          decoration: const InputDecoration(
+            labelText: 'Customer Name',
+            border: OutlineInputBorder(),
+          ),
         ),
-      ),
+        16.height,
+        ErWidgets.filledButton(
+          text: 'Add Customers',
+          onPressed: () => _addCustomer(context),
+        ),
+      ],
+    );
+  }
+}
+
+class _CustomerList extends StatelessWidget {
+  const _CustomerList();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CustomerBloc, CustomerState>(
+      builder: (context, state) {
+        if (state is CustomerLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is CustomerLoaded) {
+          return state.customers.isEmpty
+              ? Center(child: 'No customers yet.'.boldText(color: ErColor.red))
+              : ListView.builder(
+                  itemCount: state.customers.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        6.height,
+                        state.customers[index].customerName
+                            .semiBoldText(fontSize: 16),
+                        6.height,
+                        CustomBox(
+                          height: 1,
+                          width: double.infinity,
+                          color: ErColor.grey,
+                        )
+                      ],
+                    );
+                  },
+                );
+        } else if (state is CustomerError) {
+          return Center(child: Text('Error: ${state.message}'));
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }
