@@ -12,6 +12,8 @@ import 'package:elastic_run/screens/sales_data/models/supporting_models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SalesDataBloc extends Bloc<SalesDataEvent, SalesDataState> {
+  /// this objects can be simplified by GetIt and app instance architecture
+  /// due to time constrains not able to do
   final CustomerDao _customerDao = CustomerDao(database!);
   final InventoryDao _inventoryDao = InventoryDao(database!);
   final InvoiceDao _invoiceDao = InvoiceDao();

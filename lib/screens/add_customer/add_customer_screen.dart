@@ -14,6 +14,8 @@ class AddCustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Instead of initializing at the app's start in a MultiBlocProvider,
+    /// this is initialized only when required to optimize resource usage.
     return BlocProvider(
       create: (context) => CustomerBloc()..add(FetchCustomersEvent()),
       child: Scaffold(
@@ -35,6 +37,7 @@ class AddCustomerScreen extends StatelessWidget {
   }
 }
 
+/// stateless widgets are more faster than widget method
 class _CustomerInputField extends StatefulWidget {
   const _CustomerInputField();
 

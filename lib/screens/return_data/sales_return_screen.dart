@@ -19,6 +19,8 @@ class SalesReturnScreen extends StatelessWidget {
         appBar: AppBar(
           title: 'Return History'.boldText(fontSize: 18),
         ),
+        /// Instead of initializing at the app's start in a MultiBlocProvider,
+        /// this is initialized only when required to optimize resource usage.
         body: BlocProvider(
           create: (context) => SalesReturnBloc()..add(LoadSalesReturnsEvent()),
           child: const _SalesReturnBody(),
@@ -28,6 +30,7 @@ class SalesReturnScreen extends StatelessWidget {
   }
 }
 
+/// stateless widgets are more faster than widget method
 class _SalesReturnBody extends StatelessWidget {
   const _SalesReturnBody();
 

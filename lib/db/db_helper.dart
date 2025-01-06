@@ -45,4 +45,15 @@ class DatabaseHelper {
       }
     });
   }
+
+  Future<void> resetDatabase() async {
+    final String dbPath = await getDatabasesPath();
+    final String path = join(dbPath, 'inventory.db');
+    if (_database != null) {
+      await _database!.close();
+      _database = null;
+    }
+    await deleteDatabase(path);
+    _database = await _initDatabase();
+  }
 }

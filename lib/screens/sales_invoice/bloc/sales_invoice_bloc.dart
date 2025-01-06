@@ -17,6 +17,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SalesInvoiceBloc extends Bloc<SalesInvoiceEvent, SalesInvoiceState> {
+  /// this objects can be simplified by GetIt and app instance architecture
+  /// due to time constrains not able to do
   final CustomerDao _customerDao = CustomerDao(database!);
   final InventoryDao _inventoryDao = InventoryDao(database!);
   final InvoiceDao _invoiceDao = InvoiceDao();

@@ -19,6 +19,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReturnBloc extends Bloc<ReturnEvent, ReturnState> {
+  /// this objects can be simplified by GetIt and app instance architecture
+  /// due to time constrains not able to do
   final InventoryDao _inventoryDao = InventoryDao(database!);
   final SalesReturnDao _salesReturnDao = SalesReturnDao(database!);
   final SalesReturnItemDao _salesReturnItemDao = SalesReturnItemDao(database!);
