@@ -19,13 +19,13 @@ class InventoryDao {
   ''';
 
   Future<void> insertDefaultInventoryItems(Transaction txn) async {
-    await txn.insert('Inventory',
+    await txn.insert(tableName,
         Inventory(quantity: 100, itemName: 'Sugar', unit: 'Bag').toMap());
 
-    await txn.insert('Inventory',
+    await txn.insert(tableName,
         Inventory(quantity: 50, itemName: 'Oil', unit: 'Tin').toMap());
 
-    await txn.insert('Inventory',
+    await txn.insert(tableName,
         Inventory(quantity: 40, itemName: 'Besan', unit: 'Bag').toMap());
   }
 
@@ -35,13 +35,13 @@ class InventoryDao {
   }
 
   Future<int> insertInventory(Inventory inventory) async {
-    return await database.insert('Inventory', inventory.toMap(),
+    return await database.insert(tableName, inventory.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<Inventory?> getInventoryByItemId(int itemId) async {
     final List<Map<String, dynamic>> result = await database.query(
-      'Inventory',
+      tableName,
       where: 'item_id = ?',
       whereArgs: [itemId],
     );
@@ -55,7 +55,7 @@ class InventoryDao {
       Transaction txn, int itemId, int quantity) async {
     return await txn.rawUpdate(
       '''
-    UPDATE Inventory
+    UPDATE $tableName
     SET quantity = quantity + ?
     WHERE item_id = ?
     ''',
@@ -65,7 +65,7 @@ class InventoryDao {
 
   Future<int> updateInventory(Transaction txn,Inventory inventory) async {
     return await txn.update(
-      'Inventory',
+      tableName,
       inventory.toMap(),
       where: 'item_id = ?',
       whereArgs: [inventory.itemId],

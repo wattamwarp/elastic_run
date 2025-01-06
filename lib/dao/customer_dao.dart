@@ -20,7 +20,7 @@ class CustomerDao {
 
   Future<Customer?> getCustomerById(int customerId) async {
     final List<Map<String, dynamic>> result = await database.query(
-      'Customers',
+      tableName,
       where: 'customer_id = ?',
       whereArgs: [customerId],
     );
@@ -31,7 +31,7 @@ class CustomerDao {
   }
 
   Future<List<Customer>> getAllCustomers() async {
-    final List<Map<String, dynamic>> result = await database.query('Customers');
+    final List<Map<String, dynamic>> result = await database.query(tableName);
     return result.map((map) => Customer.fromMap(map)).toList();
   }
 

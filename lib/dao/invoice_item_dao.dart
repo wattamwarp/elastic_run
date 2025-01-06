@@ -22,13 +22,13 @@ class InvoiceItemDao {
 
   Future<int> insertInvoiceItem(
       Transaction txn, InvoiceItem invoiceItem) async {
-    return await txn.insert('Invoice_Items', invoiceItem.toMap(),
+    return await txn.insert(tableName, invoiceItem.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<InvoiceItem>> getInvoiceItemsByInvoiceId(int invoiceId) async {
     final List<Map<String, dynamic>> result = await database.query(
-      'Invoice_Items',
+      tableName,
       where: 'invoice_id = ?',
       whereArgs: [invoiceId],
     );

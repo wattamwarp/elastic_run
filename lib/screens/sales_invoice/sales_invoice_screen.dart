@@ -135,7 +135,7 @@ class _InventoryListTile extends StatelessWidget {
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Quantity: ${item.quantity}'),
+          Text('Available Quantity: ${item.quantity}'),
           SizedBox(
             width: 170,
             child: TextField(

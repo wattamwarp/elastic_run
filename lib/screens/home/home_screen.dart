@@ -76,7 +76,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             20.height,
-            'to check latest staock go to sales invoice inthat you can check current stock'.semiBoldText(color: ErColor.red),
+            'to check latest stock go to sales invoice in that you can check current stock'.semiBoldText(color: ErColor.red),
           ],
         ),
       ),

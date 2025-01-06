@@ -20,7 +20,7 @@ class SalesReturnDao {
 
   Future<int> createSalesReturn(SalesReturn salesReturn) async {
     final salesReturnId =
-        await database.insert('sales_returns', salesReturn.toMap());
+        await database.insert(tableName, salesReturn.toMap());
     return salesReturnId;
   }
 

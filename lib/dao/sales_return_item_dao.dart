@@ -20,7 +20,7 @@ class SalesReturnItemDao {
   ''';
 
   Future<void> addReturnItem(int salesReturnId, SalesReturnItem item) async {
-    await db.insert('sales_return_items', {
+    await db.insert(tableName, {
       'sales_return_id': salesReturnId,
       'item_id': item.itemId,
       'item_name': item.itemName,

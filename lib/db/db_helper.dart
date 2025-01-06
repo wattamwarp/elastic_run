@@ -10,6 +10,7 @@ import 'package:sqflite/sqflite.dart';
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
+  final String _dbName = 'inventory.db';
 
   factory DatabaseHelper() => _instance;
 
@@ -23,7 +24,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     final String dbPath = await getDatabasesPath();
-    final String path = join(dbPath, 'inventory.db');
+    final String path = join(dbPath, _dbName);
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
@@ -48,7 +49,7 @@ class DatabaseHelper {
 
   Future<void> resetDatabase() async {
     final String dbPath = await getDatabasesPath();
-    final String path = join(dbPath, 'inventory.db');
+    final String path = join(dbPath, _dbName);
     if (_database != null) {
       await _database!.close();
       _database = null;

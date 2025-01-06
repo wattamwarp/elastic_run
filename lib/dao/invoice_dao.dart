@@ -18,13 +18,13 @@ class InvoiceDao {
   ''';
 
   Future<List<Invoice>> getAllInvoices() async {
-    final List<Map<String, dynamic>> result = await database!.query('Invoices');
+    final List<Map<String, dynamic>> result = await database!.query(tableName);
     return result.map((map) => Invoice.fromMap(map)).toList();
   }
 
   Future<int> insertInvoice(Transaction txn, Invoice invoice) async {
     final invoiceId = await txn.insert(
-      'Invoices',
+      tableName,
       invoice.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
