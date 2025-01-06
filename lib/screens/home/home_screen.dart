@@ -23,10 +23,12 @@ class HomeScreen extends StatelessWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            6.height,
-            AppImage(
-              _logo,
-              height: 80,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 8),
+              child: AppImage(
+                _logo,
+                height: 80,
+              ),
             ),
             30.height,
             ErWidgets.filledButton(

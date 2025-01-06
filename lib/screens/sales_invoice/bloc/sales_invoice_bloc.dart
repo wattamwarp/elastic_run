@@ -41,7 +41,7 @@ class SalesInvoiceBloc extends Bloc<SalesInvoiceEvent, SalesInvoiceState> {
       CreateInvoiceEvent event, Emitter<SalesInvoiceState> emit) async {
     Database db = await DatabaseHelper().database;
     if (_selectedCustomer.isEmpty) {
-      event.context.showSnackBar('select customer name');
+      event.context.showSnackBar('Add customers / select customer name');
       return;
     }
     try {
