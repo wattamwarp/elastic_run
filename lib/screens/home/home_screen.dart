@@ -64,13 +64,7 @@ class HomeScreen extends StatelessWidget {
                     context: context, screenName: const SalesReturnScreen());
               },
             ),
-            12.height,
-            ErWidgets.filledButton(
-              text: 'Reset  Database',
-              onPressed: () {
-                _resetDb();
-              },
-            ),
+
             12.height,
             ErWidgets.filledButton(
               text: 'Future Scopes of app',
@@ -83,11 +77,6 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  void _resetDb() {
-    DatabaseHelper().resetDatabase();
-  }
-
   void _navigateTo(
       {required BuildContext context, required Widget screenName}) {
     context.push(screenName);
