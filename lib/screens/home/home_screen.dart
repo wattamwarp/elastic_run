@@ -1,6 +1,7 @@
-import 'package:elastic_run/db/db_helper.dart';
+import 'package:elastic_run/color/er_color.dart';
 import 'package:elastic_run/extensions/containers.dart';
 import 'package:elastic_run/extensions/navigation.dart';
+import 'package:elastic_run/extensions/text.dart';
 import 'package:elastic_run/reusable_widgets/app_image.dart';
 import 'package:elastic_run/reusable_widgets/er_widgets.dart';
 import 'package:elastic_run/screens/add_customer/add_customer_screen.dart';
@@ -74,6 +75,8 @@ class HomeScreen extends StatelessWidget {
                _navigateTo(context: context, screenName: const FutureScopes());
               },
             ),
+            20.height,
+            'to check latest staock go to sales invoice inthat you can check current stock'.semiBoldText(color: ErColor.red),
           ],
         ),
       ),
